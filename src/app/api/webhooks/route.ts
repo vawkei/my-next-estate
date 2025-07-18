@@ -44,7 +44,7 @@ export async function POST(req: Request) {
       "svix-signature": svix_signature,
       "svix-timestamp": svix_timestamp,
     }) as ClerkType;
-    console.log("webhook verified...");
+    console.log("webhook verified...",evt);
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "verification failed";
