@@ -16,6 +16,8 @@ export const createOrUpdateUser =async ()=>{
             // },
             {upsert:true,new:true}
         )
+        console.log("user:",user)
+        return user;
     }catch(error){
         const message = error instanceof Error ?error.message:"something went wrong";
         console.log(`Error createOrUpdateUser:`,message);

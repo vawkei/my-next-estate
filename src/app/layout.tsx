@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import MainNavigation from "@/components/header/MainNavigation";
 import { ClerkProvider } from "@clerk/nextjs";

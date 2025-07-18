@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { BsTrash } from "react-icons/bs";
 
@@ -56,11 +57,11 @@ export default function RightSide(props:SecuredUrls) {
 
     setUploading(true);
 
-    let imageUrls: string[] = [];
+    const imageUrls: string[] = [];
 
     try {
       for (let i = 0; i < images.length; i++) {
-        let file = images[i];
+        const file = images[i];
         console.log("x_file:", file);
 
         const formData = new FormData();
@@ -129,6 +130,7 @@ export default function RightSide(props:SecuredUrls) {
             {selectedImages.length > 0 &&
               (selectedImages.length > 5 ? (
                 <p>
+                  {/* eslint-disable-next-line react/no-unescaped-entities */}
                   You can't upload more than 5 images
                   <br />
                   <span>
@@ -157,7 +159,7 @@ export default function RightSide(props:SecuredUrls) {
                 selectedImages.map((image, index) => {
                   return (
                     <div key={index} className="w-32 m-4">
-                      <img src={image} width={200} alt="product-image" />
+                      <Image src={image} width={200} alt="product-image" />
                       <button onClick={() => removeImage(image)}>
                         <BsTrash size={25} />
                       </button>
