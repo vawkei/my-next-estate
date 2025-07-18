@@ -11,10 +11,15 @@ export async function POST(req: Request) {
     type: "user.created" | "user.updated" | "user.deleted";
   }
 
-  const SIGNIN_SECRET = process.env.SIGNIN_SECRET as string;
+  const SIGNIN_SECRET = process.env.SIGNIN_SECRET;
+  console.log("signin secret:", SIGNIN_SECRET);
+
   if (!SIGNIN_SECRET) {
     console.log("No sign in secret key detected..");
+    throw new Error("SIGNIN_SECRET is required");
   }
+
+  console.log("confirmed signin secret");
 
   const wh = new Webhook(SIGNIN_SECRET);
 
@@ -24,7 +29,9 @@ export async function POST(req: Request) {
 
   let evt;
 
+  console.log("about to retrieve the body");
   const body = await req.text();
+  console.log("body retrieved:", body);
 
   try {
     evt = wh.verify(body, {
@@ -32,11 +39,15 @@ export async function POST(req: Request) {
       "svix-signature": svix_signature,
       "svix-timestamp": svix_timestamp,
     }) as ClerkType;
+    console.log("webhook verified...");
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "verification failed";
     console.log(message);
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json(
+      { error: `verification error:${message}` },
+      { status: 500 }
+    );
   }
 
   // const { id } = evt.data;
