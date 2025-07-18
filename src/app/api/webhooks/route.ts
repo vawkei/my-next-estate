@@ -26,6 +26,11 @@ export async function POST(req: Request) {
   const svix_id = req.headers.get("svix-id") ?? "";
   const svix_timestamp = req.headers.get("svix-timestamp") ?? "";
   const svix_signature = req.headers.get("svix-signature") ?? "";
+  console.log({
+    svix_id: "svix_id",
+    svix_timestamp: "svix_timestamp",
+    svix_signature: "svix_signature",
+  });
 
   let evt;
 
@@ -85,4 +90,5 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: message }, { status: 500 });
     }
   }
+  return NextResponse.json({message:"Webhook received"},{status:200})
 }
