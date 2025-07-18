@@ -1,6 +1,6 @@
 import { Webhook } from "svix";
 import { createOrUpdateUser } from "@/lib/actions/user";
-import { clerkClient } from "@clerk/nextjs/server";
+// import { clerkClient } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
