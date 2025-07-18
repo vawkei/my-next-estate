@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     const result = await uploadToCloudinary();
     return NextResponse.json({ result });
   } catch (error) {
-    console.log("Error:upload failed");
+    console.log("Error:upload failed",error);
     return NextResponse.json({ error: "upload failed" }, { status: 500 });
   }
 }
