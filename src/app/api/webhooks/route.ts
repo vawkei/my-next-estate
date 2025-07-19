@@ -1,15 +1,22 @@
 import { Webhook } from "svix";
-import { createOrUpdateUser } from "@/lib/actions/user";
-// import { clerkClient } from "@clerk/nextjs/server";
+import { createOrUpdateUser, deleteUser } from "@/lib/actions/user";
+import { clerkClient } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { ClerkType } from "@/app/interface";
 
 export async function POST(req: Request) {
   console.log("Webhook route hit...");
 
-  interface ClerkType {
-    data: { id: string };
-    type: "user.created" | "user.updated" | "user.deleted";
-  }
+  // interface ClerkType {
+  //   data: {
+  //     id: string;
+  //     first_name: string;
+  //     last_name: string;
+  //     image_url: string;
+  //     email_addresses: [object];
+  //   };
+  //   type: "user.created" | "user.updated" | "user.deleted";
+  // }
 
   const SIGNIN_SECRET = process.env.SIGNIN_SECRET;
   console.log("signin secret:", SIGNIN_SECRET);
@@ -27,9 +34,9 @@ export async function POST(req: Request) {
   const svix_timestamp = req.headers.get("svix-timestamp") ?? "";
   const svix_signature = req.headers.get("svix-signature") ?? "";
   console.log({
-    svix_id: "svix_id",
-    svix_timestamp: "svix_timestamp",
-    svix_signature: "svix_signature",
+    svix_id: svix_id,
+    svix_timestamp: svix_timestamp,
+    svix_signature: svix_signature,
   });
 
   let evt;
@@ -44,7 +51,7 @@ export async function POST(req: Request) {
       "svix-signature": svix_signature,
       "svix-timestamp": svix_timestamp,
     }) as ClerkType;
-    console.log("webhook verified...",evt);
+    console.log("webhook verified...", evt);
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "verification failed";
@@ -55,23 +62,25 @@ export async function POST(req: Request) {
     );
   }
 
-  // const { id } = evt.data;
+  const { id } = evt.data;
   const eventType = evt.type;
 
   if (eventType === "user.created" || eventType === "user.updated") {
-    const {} = evt.data;
+    const { first_name, last_name, email_addresses, image_url } = evt.data;
 
     try {
-      const user = await createOrUpdateUser();
+      const user = await createOrUpdateUser(
+        { id, first_name, last_name, email_addresses, image_url } //pass it as a single object
+      );
 
       if (user && eventType === "user.created") {
         try {
-          // const clerk = await clerkClient();
-          // clerk.users.updateUserMetadata(id, {
-          //   publicMetadata: {
-          //     userMongoId: user._id,
-          //   },
-          // });
+          const clerk = await clerkClient();
+          clerk.users.updateUserMetadata(id, {
+            publicMetadata: {
+              userMongoId: user._id,
+            },
+          });
         } catch (error) {
           const message =
             error instanceof Error
@@ -90,5 +99,18 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: message }, { status: 500 });
     }
   }
-  return NextResponse.json({message:"Webhook received"},{status:200})
+
+  if (eventType === "user.deleted") {
+    try {
+      await deleteUser(id);
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "couldnt create or update user in db";
+      console.log("Error:", message);
+      return NextResponse.json({ error: message }, { status: 500 });
+    }
+  }
+  return NextResponse.json({ message: "Webhook received" }, { status: 200 });
 }
