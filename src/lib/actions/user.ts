@@ -34,9 +34,15 @@ export const createOrUpdateUser = async (clerkUser:ClerkType["data"]) => {
 };
 
 export const deleteUser = async (id: string) => {
+    console.log("about to run deleteUser...");
   try {
     await connect();
-    await User.findByIdAndDelete({ clerkId: id });
+    console.log("connected sussfully...")
+    const user =  await User.findOneAndDelete({ clerkId: id });
+    if(user){
+      console.log(`found user:${user}`)
+    }
+    
     return NextResponse.json({ message: "user deleted" }, { status: 200 });
   } catch (error) {
     const message =
