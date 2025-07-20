@@ -107,7 +107,7 @@ export async function POST(req: Request) {
       const message =
         error instanceof Error
           ? error.message
-          : "couldnt create or update user in db";
+          : "couldnt delete user";
       console.log("Error:", message);
       return NextResponse.json({ error: message }, { status: 500 });
     }

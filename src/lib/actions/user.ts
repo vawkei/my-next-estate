@@ -40,9 +40,8 @@ export const deleteUser = async (id: string) => {
     console.log("connected sussfully...")
     const user =  await User.findOneAndDelete({ clerkId: id });
     if(user){
-      console.log(`found user:${user}`)
+      console.log(`user deleted`)
     }
-    
     return NextResponse.json({ message: "user deleted" }, { status: 200 });
   } catch (error) {
     const message =

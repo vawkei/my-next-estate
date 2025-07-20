@@ -7,7 +7,7 @@ import { useUser } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 export default function LeftSide() {
-  const {  user } = useUser();
+  const { user } = useUser();
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [securedUrls, setSecuredUrls] = useState<string[]>([]);
@@ -34,38 +34,51 @@ export default function LeftSide() {
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const target = event.target;
+    // const target = event.target;
+    console.log(event.target)
+    //typed w in the anme field:
+    // <input type="text" placeholder="Name" class="p-3 border rounded-2xl" id="name" maxlength="14" minlength="4" required="" value="w">
 
-    if (target.id === "sale" || target.id === "rent") {
+    if (event.target.id === "sale" || event.target.id === "rent") {
       setFormData({
         ...formData,
-        type: target.id,
+        type: event.target.id,
       });
     }
     if (
-      target.id === "parking" ||
-      target.id === "furnished" ||
-      target.id === "offer"
+      event.target.id === "parking" ||
+      event.target.id === "furnished" ||
+      event.target.id === "offer"
     ) {
-      if (target instanceof HTMLInputElement) {
+      if (event.target instanceof HTMLInputElement) {
         setFormData({
           ...formData,
-          [event.target.id]: target.checked,
+          [event.target.id]: event.target.checked,
         });
       }
     }
     if (
       event.target instanceof HTMLTextAreaElement ||
-      target.type === "number" ||
-      target.type === "text"
+      event.target.type === "number" ||
+      event.target.type === "text"
       // event.target.type === "text-area"
     ) {
       setFormData({
         ...formData,
-        [target.id]: event.target.value,
+        [event.target.id]: event.target.value,
       });
     }
   };
+  // <input
+  //   type="number"
+  //   id="bedrooms"
+  //   min={1}
+  //   max={5}
+  //   required
+  //   className="border rounded-lg p-3"
+  //   onChange={handleChange}
+  //   value={formData.bedrooms}
+  // />;
 
   const onSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -102,7 +115,7 @@ export default function LeftSide() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...filledFormData,
-          userMongoId:user?.publicMetadata.userMongoId
+          userMongoId: user?.publicMetadata.userMongoId,
         }),
       });
 
@@ -132,7 +145,7 @@ export default function LeftSide() {
   return (
     // <div  className="max-w-4xl mx-auto">
     <main>
-        {isLoading&&<p>Loading...</p>}
+      {isLoading && <p>Loading...</p>}
       <form
         onSubmit={onSubmitHandler}
         className="flex flex-col gap-4 w-full sm:flex-row">
@@ -232,6 +245,7 @@ export default function LeftSide() {
               <div className="flex items-center gap-2">
                 <input
                   type="number"
+                  id="bedrooms"
                   min={1}
                   max={5}
                   required
@@ -244,6 +258,7 @@ export default function LeftSide() {
               <div className="flex items-center gap-2">
                 <input
                   type="number"
+                  id="bathrooms"
                   min={1}
                   max={5}
                   className="border rounded-lg p-3"
@@ -258,6 +273,7 @@ export default function LeftSide() {
                 <div className="flex items-center gap-2">
                   <input
                     type="number"
+                    id="regularPrice"
                     min={50}
                     max={1000000}
                     className="border rounded-lg p-3"
@@ -272,6 +288,7 @@ export default function LeftSide() {
                   <div className="flex items-center gap-2">
                     <input
                       type="number"
+                      id="discountPrice"
                       min={0}
                       max={1000000}
                       className="border rounded-lg p-3"
