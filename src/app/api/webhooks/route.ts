@@ -72,6 +72,8 @@ export async function POST(req: Request) {
       const user = await createOrUpdateUser(
         { id, first_name, last_name, email_addresses, image_url } //pass it as a single object
       );
+      console.log("id:",id);
+      console.log("_id:",user._id);
 
       if (user && eventType === "user.created") {
         try {

@@ -44,6 +44,9 @@ export default function LeftSide() {
         ...formData,
         type: event.target.id,
       });
+      //clicked sale:
+      // <input type="checkbox" class="p-3" id="sale">
+      // {imageUrls: Array(0), name: '', description: '', address: '', type: 'sale', …}this gets updated to sale from rent.
     }
     if (
       event.target.id === "parking" ||
@@ -55,13 +58,15 @@ export default function LeftSide() {
           ...formData,
           [event.target.id]: event.target.checked,
         });
+        // clicked furnished:
+        // <input type="checkbox" class="p-3" id="furnished">
       }
     }
     if (
       event.target instanceof HTMLTextAreaElement ||
       event.target.type === "number" ||
       event.target.type === "text"
-      // event.target.type === "text-area"
+      // dont really understand this part
     ) {
       setFormData({
         ...formData,
@@ -69,16 +74,7 @@ export default function LeftSide() {
       });
     }
   };
-  // <input
-  //   type="number"
-  //   id="bedrooms"
-  //   min={1}
-  //   max={5}
-  //   required
-  //   className="border rounded-lg p-3"
-  //   onChange={handleChange}
-  //   value={formData.bedrooms}
-  // />;
+
 
   const onSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
