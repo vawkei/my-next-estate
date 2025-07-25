@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { NextResponse } from "next/server";
 import React from "react";
 import {
@@ -12,7 +13,7 @@ const Listing = async ({params}:{params:{id:string}}) => {
   let listing = null;
 
   try {
-    const result = await fetch(process.env + "/api/listing/get", {
+   const result = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/listing/get`, {
       method: "POST",
       body: JSON.stringify({ listingId: params.id }),
       cache: "no-store",
@@ -40,7 +41,7 @@ const Listing = async ({params}:{params:{id:string}}) => {
   return (
     <div>
       <div>
-        <img
+        <Image
           src={listing.imageUrls}
           alt={listing.name}
           className="w-full h-[40px] object-cover"
