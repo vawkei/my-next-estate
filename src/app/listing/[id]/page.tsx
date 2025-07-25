@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { NextResponse } from "next/server";
 import React from "react";
 import {
   FaBath,
@@ -9,15 +8,24 @@ import {
   FaParking,
 } from "react-icons/fa";
 
-const Listing = async ({params}:{params:{id:string}}) => {
+interface PageProps {
+  params: {
+    id: string;
+  };
+}
+
+const Listing = async ({ params }: PageProps) => {
   let listing = null;
 
   try {
-   const result = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/listing/get`, {
-      method: "POST",
-      body: JSON.stringify({ listingId: params.id }),
-      cache: "no-store",
-    });
+    const result = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/listing/get`,
+      {
+        method: "POST",
+        body: JSON.stringify({ listingId: params.id }),
+        cache: "no-store",
+      }
+    );
 
     const data = await result.json();
     listing = data;
@@ -25,7 +33,13 @@ const Listing = async ({params}:{params:{id:string}}) => {
     const message =
       error instanceof Error ? error.message : "something went wrong";
     console.log("Error message:", message);
-    return NextResponse.json({ error: message }, { status: 500 });
+    return (
+      <main className="p-3 flex flex-col max-w-6xl mx-auto min-h-screen">
+        <h2 className="text-xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text:2xl">
+          {message}
+        </h2>
+      </main>
+    );
   }
 
   if (!listing) {
@@ -42,9 +56,9 @@ const Listing = async ({params}:{params:{id:string}}) => {
     <div>
       <div>
         <Image
-          src={listing.imageUrls}
+          src={listing.imageUrls[0]}
           alt={listing.name}
-          className="w-full h-[40px] object-cover"
+          className="w-full h-[400px] object-cover"
         />
         <div className="flex flex-col max-w-4xl mx-auto p-3 my-7 gap-4">
           <p className="text-2xl font-semibold">
@@ -64,7 +78,7 @@ const Listing = async ({params}:{params:{id:string}}) => {
             </p>
             {listing.offer && (
               <p className="bg-green-900 w-full max-w-[200px] text-white text-center p-1 rounded-md">
-                $ OFF
+                ${listing.regularPrice - listing.discountPrice} OFF
               </p>
             )}
           </div>
@@ -72,10 +86,10 @@ const Listing = async ({params}:{params:{id:string}}) => {
             <span className="font-semibold text-black">Description - </span>
             {listing.description}
           </p>
-          <ul className="text-green-900 font-semibold text-sm flex flex-wrap items-center gap-4 sm::gap-6">
+          <ul className="text-green-900 font-semibold text-sm flex flex-wrap items-center gap-4 sm:gap-6">
             <li className="flex items-center gap-1 whitespace-nowrap">
               <FaBed className="text-lg" />
-              {listing.bedroom > 1
+              {listing.bedrooms > 1
                 ? `${listing.bedrooms} beds`
                 : `${listing.bedrooms} bed`}
             </li>
