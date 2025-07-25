@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import RightSide from "./RightSide";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";

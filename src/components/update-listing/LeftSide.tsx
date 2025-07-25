@@ -131,7 +131,7 @@ export default function LeftSide() {
       return NextResponse.json({ error: message }, { status: 500 });
     }
   };
-
+ 
   useEffect(() => {
     const fetchListing = async () => {
       const response = await fetch("/api/listing/get", {
@@ -148,9 +148,9 @@ export default function LeftSide() {
       setFormData(responseData);
     };
     fetchListing();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    // <div  className="max-w-4xl mx-auto">
     <main>
       {isLoading && <p>Loading...</p>}
       <form

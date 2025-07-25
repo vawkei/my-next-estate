@@ -41,7 +41,7 @@ const Listing = async ({params}:{params:{id:string}}) => {
     <div>
       <div>
         <img
-          src=""
+          src={listing.imageUrls}
           alt={listing.name}
           className="w-full h-[40px] object-cover"
         />
