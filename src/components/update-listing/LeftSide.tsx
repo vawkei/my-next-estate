@@ -2,16 +2,18 @@
 
 import React, { useEffect, useState } from "react";
 import RightSide from "./RightSide";
-import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
+import { useRouter, usePathname } from "next/navigation";
 
 export default function LeftSide() {
   const { user } = useUser();
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [securedUrls, setSecuredUrls] = useState<string[]>([]);
- 
+
+  const pathName = usePathname();
+  const listingId = pathName.split("/").pop();
 
   const router = useRouter();
 
@@ -35,19 +37,16 @@ export default function LeftSide() {
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    // const target = event.target;
-    console.log(event.target)
-    //typed w in the anme field:
-    // <input type="text" placeholder="Name" class="p-3 border rounded-2xl" id="name" maxlength="14" minlength="4" required="" value="w">
+
+    console.log(event.target);
+ 
 
     if (event.target.id === "sale" || event.target.id === "rent") {
       setFormData({
         ...formData,
         type: event.target.id,
       });
-      //clicked sale:
-      // <input type="checkbox" class="p-3" id="sale">
-      // {imageUrls: Array(0), name: '', description: '', address: '', type: 'sale', …}this gets updated to sale from rent.
+    
     }
     if (
       event.target.id === "parking" ||
@@ -75,7 +74,6 @@ export default function LeftSide() {
       });
     }
   };
-
 
   const onSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -107,12 +105,13 @@ export default function LeftSide() {
 
     try {
       setIsLoading(true);
-      const response = await fetch("/api/listing/create", {
+      const response = await fetch("/api/listing/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...filledFormData,
           userMongoId: user?.publicMetadata.userMongoId,
+          listingId
         }),
       });
 
@@ -133,9 +132,23 @@ export default function LeftSide() {
     }
   };
 
+  useEffect(() => {
+    const fetchListing = async () => {
+      const response = await fetch("/api/listing/get", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ listingId }),
+      });
+      if (!response.ok) {
+        throw new Error("something went wrong");
+      }
 
-
-
+      const responseData = await response.json();
+      console.log("responseData:", responseData);
+      setFormData(responseData);
+    };
+    fetchListing();
+  }, []);
   return (
     // <div  className="max-w-4xl mx-auto">
     <main>

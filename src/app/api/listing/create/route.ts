@@ -14,8 +14,10 @@ export const POST =async (req:NextRequest)=>{
         console.log("connection successful...");
 
         const data = await req.json();
-        console.log("userRef:",user?.publicMetadata.userMongoId);
+        console.log("userRef:",user?.publicMetadata.userMongoId); 
+        //userRef: 687dbdb2238fbdeae1c1cfe7
         console.log("data.userMongoId:",data.userMongoId);
+        //data.userMongoId: 687dbdb2238fbdeae1c1cfe7
 
         if(!user || user.publicMetadata.userMongoId !== data.userMongoId){
             console.log("Unauthorized")
