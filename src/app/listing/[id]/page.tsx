@@ -8,13 +8,22 @@ import {
   FaParking,
 } from "react-icons/fa";
 
-type Props = {
-  params: {
-    id: string;
-  };
-};
+// 👇👇
+// interface Props {
+//   params: { id: string };
+// }
+//📒📒this gives an error in build time using NEXTJS 15, but works well on next@14.x
+//react@18.x typescript@5.4.x, So i am using a work around i found on: https://stackoverflow.com/questions/79124951/type-error-in-next-js-route-type-params-id-string-does-not-satis . 📒📒
+// 👆👆
+
+// 👇 Workaround interface for Next.js 15 type bug
+interface Props {
+  params: Promise<{ id: string }>;
+}
 
 const Listing = async ({ params }: Props) => {
+  const { id } = await params; // ✅ This line unpacks the promised params
+
   let listing = null;
 
   try {
@@ -22,7 +31,8 @@ const Listing = async ({ params }: Props) => {
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/listing/get`,
       {
         method: "POST",
-        body: JSON.stringify({ listingId: params.id }),
+        // body: JSON.stringify({ listingId: params.id }),
+        body: JSON.stringify({ listingId: id }),
         cache: "no-store",
       }
     );
