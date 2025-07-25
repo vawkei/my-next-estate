@@ -8,13 +8,13 @@ import {
   FaParking,
 } from "react-icons/fa";
 
-interface PageProps {
+type Props = {
   params: {
     id: string;
   };
-}
+};
 
-const Listing = async ({ params }: PageProps) => {
+const Listing = async ({ params }: Props) => {
   let listing = null;
 
   try {
