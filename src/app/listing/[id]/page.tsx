@@ -22,6 +22,8 @@ interface Props {
 }
 
 const Listing = async ({ params }: Props) => {
+  
+  // Next.js 15’s type system wrongly thinks params is a Promise, so when you do this:
   const { id } = await params; // ✅ This line unpacks the promised params
 
   let listing = null;
@@ -38,7 +40,9 @@ const Listing = async ({ params }: Props) => {
     );
 
     const data = await result.json();
-    listing = data;
+    console.log("DATA:",data)
+    listing = data[0];
+    console.log("listing:",listing)
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "something went wrong";

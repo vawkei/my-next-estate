@@ -48,8 +48,8 @@ export const POST = async (req: Request) => {
       .sort({ updatedAt: sortDirection })
       .skip(startIndex)
       .limit(limit);
-    // return new Response(JSON.stringify(listings), { status: 200 });
-    return NextResponse.json({listings:JSON.stringify(listings)},{status:200})
+    return new Response(JSON.stringify(listings), { status: 200 });
+    // return NextResponse.json({listings:JSON.stringify(listings)},{status:200})
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "something went wrong";

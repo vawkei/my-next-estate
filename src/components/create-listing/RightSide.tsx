@@ -159,7 +159,7 @@ export default function RightSide(props:SecuredUrls) {
                 selectedImages.map((image, index) => {
                   return (
                     <div key={index} className="w-32 m-4">
-                      <Image src={image} width={200} alt="product-image" />
+                      <img src={image} width={200} alt="product-image" />
                       <button onClick={() => removeImage(image)}>
                         <BsTrash size={25} />
                       </button>
