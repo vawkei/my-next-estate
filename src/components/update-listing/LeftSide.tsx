@@ -37,16 +37,13 @@ export default function LeftSide() {
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-
     console.log(event.target);
- 
 
     if (event.target.id === "sale" || event.target.id === "rent") {
       setFormData({
         ...formData,
         type: event.target.id,
       });
-    
     }
     if (
       event.target.id === "parking" ||
@@ -111,7 +108,7 @@ export default function LeftSide() {
         body: JSON.stringify({
           ...filledFormData,
           userMongoId: user?.publicMetadata.userMongoId,
-          listingId
+          listingId,
         }),
       });
 
@@ -131,7 +128,7 @@ export default function LeftSide() {
       return NextResponse.json({ error: message }, { status: 500 });
     }
   };
- 
+
   useEffect(() => {
     const fetchListing = async () => {
       const response = await fetch("/api/listing/get", {
@@ -146,6 +143,7 @@ export default function LeftSide() {
       const responseData = await response.json();
       console.log("responseData:", responseData);
       setFormData(responseData[0]);
+      setSecuredUrls(responseData[0]?.imageUrls || []);
     };
     fetchListing();
     // eslint-disable-next-line react-hooks/exhaustive-deps
