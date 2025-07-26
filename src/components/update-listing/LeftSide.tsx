@@ -145,7 +145,7 @@ export default function LeftSide() {
 
       const responseData = await response.json();
       console.log("responseData:", responseData);
-      setFormData(responseData);
+      setFormData(responseData[0]);
     };
     fetchListing();
     // eslint-disable-next-line react-hooks/exhaustive-deps
