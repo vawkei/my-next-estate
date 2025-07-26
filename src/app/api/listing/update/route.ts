@@ -9,6 +9,7 @@ export const POST = async (req: Request) => {
   try {
     await connect();
     const data = await req.json();
+    console.log("data:", data);
 
     if (!user || user.publicMetadata.userMongoId !== data.userMongoId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 400 });
@@ -34,11 +35,8 @@ export const POST = async (req: Request) => {
       },
       { new: true }
     );
-    await newListing.save();
-    return NextResponse.json(
-      { updatedListing: JSON.stringify(newListing) },
-      { status: 200 }
-    );
+    // await newListing.save(); not necessary
+    return NextResponse.json(newListing, { status: 200 });
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "something went wrong";
