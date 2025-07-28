@@ -6,6 +6,21 @@ import ListingItem from "@/components/listing-item/ListingItem";
 import hero from "../../public/sahandkey.jpeg"
 import Image from "next/image";
 
+interface Listing {
+  _id: string;
+  name: string;
+  description: string;
+  imageUrls: string[];
+  price: number;
+  address: string;
+  regularPrice: number;
+  offer: number;
+  discountPrice: number;
+  type: string;
+  bathrooms: number;
+  bedrooms: number;
+}
+
 export default async function Home() {
   let rentListing = null;
 
@@ -92,7 +107,7 @@ export default async function Home() {
           Let&apos;s get started...
         </Link>
       </div>
-       {/* <Image src={hero} className="w-full h-[550px] object-cover" alt="hero"/>  */}
+       <Image src={hero} className="w-full h-[550px] object-cover" alt="hero"/> 
       <div className="max-w-6xl mx-auto p-3 flex flex-col gap-8 my-10">
         {offerListings && offerListings.length > 0 && (
           <div>
@@ -107,8 +122,8 @@ export default async function Home() {
               </Link>
             </div>
             <div className="flex flex-wrap gap-4">
-              {offerListings.map((listing: any) => (
-                <ListingItem listing={listing} key={listing.id} />
+              {offerListings.map((listing:Listing) => (
+                <ListingItem listing={listing} key={listing._id} />
               ))}
             </div>
           </div>
