@@ -47,7 +47,9 @@ export const POST = async (req: Request) => {
     })
       .sort({ updatedAt: sortDirection })
       .skip(startIndex)
-      .limit(limit);
+      .limit(limit)
+      .lean();
+      //📒📒 The .lean() method tells Mongoose to skip creating full Mongoose documents (which are classes) and instead return plain JavaScript objects, which are JSON-serializable and safe to pass to client components.📒📒
     return new Response(JSON.stringify(listings), { status: 200 });
     // return NextResponse.json({listings:JSON.stringify(listings)},{status:200})
   } catch (error) {
