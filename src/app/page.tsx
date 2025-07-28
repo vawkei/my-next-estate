@@ -141,8 +141,8 @@ export default async function Home() {
               </Link>
             </div>
             <div className="flex flex-wrap gap-4">
-              {rentListing.map((listing: any) => (
-                <ListingItem listing={listing} key={listing.id} />
+              {rentListing.map((listing: Listing) => (
+                <ListingItem listing={listing} key={listing._id} />
               ))}
             </div>
           </div>
@@ -160,8 +160,8 @@ export default async function Home() {
               </Link>
             </div>
             <div className="flex flex-wrap gap-4">
-              {saleListing.map((listing: any) => (
-                <ListingItem listing={listing} key={listing.id} />
+              {saleListing.map((listing: Listing) => (
+                <ListingItem listing={listing} key={listing._id} />
               ))}
             </div>
           </div>
