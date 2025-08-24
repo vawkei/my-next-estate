@@ -9,9 +9,10 @@ const isProtectedRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware(async(auth, req) => {
-  console.log("authBoy...:",auth())
+  // console.log("authBoy...:",auth())
   const { userId } =await auth();
   if (!userId && isProtectedRoute(req)) {
+    //if the user isnt logged in and the route matches what we specified in isProtectedRoute, we want to redirect the user to the home
     return NextResponse.redirect(new URL("/", req.url));
   }
 });

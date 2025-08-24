@@ -4,30 +4,30 @@ import Link from "next/link";
 import { FaSearch } from "react-icons/fa";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
-import React, { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import React, { useState } from "react";
+// import { useSearchParams, useRouter } from "next/navigation";
 
 export default function MainNavigation() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
+  // const searchParams = useSearchParams();
+  // const router = useRouter();
 
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const urlParams = new URLSearchParams(searchParams);
-    urlParams.set("searchTerm", searchTerm);
-    const searchQuery = urlParams.toString();
-    router.push(`/search/?${searchQuery}`);
+    // const urlParams = new URLSearchParams(searchParams);
+    // urlParams.set("searchTerm", searchTerm);
+    // const searchQuery = urlParams.toString();
+    // router.push(`/search/?${searchQuery}`);
   };
 
-  useEffect(() => {
-    const urlParams = new URLSearchParams(searchParams);
-    const searchTermFromUrl = urlParams.get("searchTerm");
-    if (searchTermFromUrl) {
-      setSearchTerm(searchTermFromUrl);
-    }
-  }, [searchParams]);
+  // useEffect(() => {
+  //   const urlParams = new URLSearchParams(searchParams);
+  //   const searchTermFromUrl = urlParams.get("searchTerm");
+  //   if (searchTermFromUrl) {
+  //     setSearchTerm(searchTermFromUrl);
+  //   }
+  // }, [searchParams]);
 
   return (
     <header className="bg-orange-300">
