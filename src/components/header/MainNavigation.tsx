@@ -2,33 +2,32 @@
 
 import Link from "next/link";
 import { FaSearch } from "react-icons/fa";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignOutButton, UserButton } from "@clerk/nextjs";
 
-import React, { useEffect,useState } from "react";
-import { useSearchParams,useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 
 export default function MainNavigation() {
-
   const searchParams = useSearchParams();
   const router = useRouter();
-  
-  const [searchTerm,setSearchTerm] = useState("");
 
-  const handleSubmit=(e:React.FormEvent<HTMLFormElement>)=>{
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const urlParams = new URLSearchParams(searchParams);
-    urlParams.set("searchTerm",searchTerm);
+    urlParams.set("searchTerm", searchTerm);
     const searchQuery = urlParams.toString();
-    router.push(`/search/?${searchQuery}`)
-  }
+    router.push(`/search/?${searchQuery}`);
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     const urlParams = new URLSearchParams(searchParams);
     const searchTermFromUrl = urlParams.get("searchTerm");
-    if(searchTermFromUrl){
-      setSearchTerm(searchTermFromUrl)
+    if (searchTermFromUrl) {
+      setSearchTerm(searchTermFromUrl);
     }
-  },[searchParams])
+  }, [searchParams]);
 
   return (
     <header className="bg-orange-300">
@@ -38,13 +37,16 @@ export default function MainNavigation() {
           <span className="text-red-400 font-bold">Next</span>
           <span>Estate</span>
         </h1>
-        <form onSubmit={handleSubmit} className="bg-slate-50 rounded-2xl flex items-center p-3">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-slate-50 rounded-2xl flex items-center p-3"
+        >
           <input
             type="text"
             placeholder="Search..."
             className="focus:outline-none w-24 sm:w-46"
             value={searchTerm}
-            onChange={(e)=>setSearchTerm(e.target.value)}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
           <button>
             <FaSearch size={16} />
@@ -74,7 +76,11 @@ export default function MainNavigation() {
               </li>
             </Link>
           </SignedOut>
-
+          {/* <SignOutButton>
+            <button className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center">
+              Sign Out
+            </button>
+          </SignOutButton> */}
         </ul>
       </div>
     </header>
