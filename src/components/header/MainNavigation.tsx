@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { FaSearch } from "react-icons/fa";
-import { SignedIn, SignedOut, SignOutButton, UserButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
